@@ -1,0 +1,79 @@
+{
+    "swagger":"2.0",
+    "info":{
+       "description":"Api para CEDENAR S.A. E.S.P.",
+       "version":"1.0.0",
+       "title":"CEDENAR Api"
+    },
+    "basePath":"/",
+    "tags":[
+       {
+          "name":"data",
+          "description":"End Point Principal"
+       }
+    ],
+    "schemes":[
+       "http"
+    ],
+    "paths":{
+       "/data":{
+          "get":{
+             "tags":[
+                "data"
+             ],
+             "summary":"Obtener datos",
+             "description":"Consumir api para obtener datos",
+             "produces":[
+                "application/json"
+             ],
+             "parameters":[
+             ],
+             "responses":{
+                "200":{
+                   "description":"operacción exitosa"
+                },
+                "400":{
+                   "description":"estado inválido"
+                }
+             }
+          }
+       }
+    },
+    "securityDefinitions":{
+       "api_key":{
+          "type":"apiKey",
+          "name":"api_key",
+          "in":"header"
+       },
+       "petstore_auth":{
+          "type":"oauth2",
+          "authorizationUrl":"https://petstore.swagger.io/oauth/authorize",
+          "flow":"implicit",
+          "scopes":{
+             "read:pets":"read your pets",
+             "write:pets":"modify pets in your account"
+          }
+       }
+    },
+    "definitions":{
+       "ApiResponse":{
+          "type":"object",
+          "properties":{
+             "code":{
+                "type":"integer",
+                "format":"int32"
+             },
+             "type":{
+                "type":"string"
+             },
+             "message":{
+                "type":"string"
+             }
+          }
+       }
+    },
+    "externalDocs":{
+       "description":"WEB Cedenar",
+       "url":"http://cedenar.com.co"
+    }
+ }

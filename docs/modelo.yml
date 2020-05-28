@@ -1,0 +1,18 @@
+Cargar Modelo
+---    
+tags:
+- Modelos
+parameters:
+- in: path
+  name: nombre_archivo
+  required: true
+  type: string
+- in: query
+  name: id_bitacora
+  required: true
+  type: integer
+responses:
+  200:
+      description: Accurracy
+      schema:
+          type: object

@@ -39,8 +39,9 @@
     <script>
     window.onload = function() {
       // Begin Swagger UI call region
+      //"{{ url_for('static', filename='swagger.json')}}",
       const ui = SwaggerUIBundle({
-        url: "{{ url_for('static', filename='swagger.json')}}",
+        url: "/doc",
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [

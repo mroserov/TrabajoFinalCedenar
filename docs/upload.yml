@@ -1,0 +1,20 @@
+Subir Archivo
+---    
+tags:
+- Archivos
+consumes:
+  - application/x-www-form-urlencoded
+produces:
+  - text/html; charset=utf-8
+parameters:
+  - in: formData
+    name: file
+    type: file
+    required: true
+    description: Archivo a subir
+responses:
+    200:
+        description: Archivo subido
+        examples:
+          text/html: 
+            <html><body>Archivo subido exitosamente</body></html>

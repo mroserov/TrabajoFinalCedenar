@@ -26,25 +26,20 @@ import requests
 FLASK_APP = os.environ.get("USERS","webapp")
 
 # Configuration
-GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", '')
-GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", '')
+UPLOAD_FOLDER = 'uploads'
 GOOGLE_DISCOVERY_URL = (
     "https://accounts.google.com/.well-known/openid-configuration"
 )
-
-
-#from .helper import eval_modelo, response_upload, allowed_file, ALLOWED_EXTENSIONS
-
-UPLOAD_FOLDER = 'uploads'
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", '')
+GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", '')
 ALLOWED_EXTENSIONS = os.environ.get('ALLOWED_EXTENSIONS','dat,csv').split(',')
 POSTGRES_URI = os.environ.get('POSTGRES_URI', '')
+app.secret_key = os.environ.get("GOOGLE_CLIENT_SECRET", '') or os.urandom(24)
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = int(os.environ.get('MAX_CONTENT_LENGTH',200)) * 1024 * 1024 # 100MB
 
-# AUTH
-app.secret_key = os.environ.get("GOOGLE_CLIENT_SECRET", '') or os.urandom(24)
 # User session management setup
 # https://flask-login.readthedocs.io/en/latest
 login_manager = LoginManager()

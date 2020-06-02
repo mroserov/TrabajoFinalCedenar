@@ -6,7 +6,6 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords, wordnet
 import es_core_news_sm
 from collections import  Counter
-nltk.download('wordnet')
 
 log = []
 

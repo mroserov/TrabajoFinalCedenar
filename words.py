@@ -1,11 +1,12 @@
 import pandas as pd
 import nltk
 from sklearn.feature_extraction.text import CountVectorizer
-from nltk.stem import WordNetLemmatizer,PorterStemmer
+from nltk.stem import WordNetLemmatizer#,PorterStemmer
 from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords, wordnet
+from nltk.corpus import stopwords#, wordnet
 import es_core_news_sm
 from collections import  Counter
+#nltk.download('wordnet')
 
 log = []
 

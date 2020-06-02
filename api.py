@@ -35,11 +35,11 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = int(os.environ.get('MAX_CONTENT_LENGTH',200)) * 1024 * 1024 # 100MB
 
-GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", '595522474871-j8tiio3u9791jkdod61ovfto96sv40ol.apps.googleusercontent.com')
-GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", 'UZ6HVz-lHiEN2BNWmnqZvYLu')
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", '')
+GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", '')
 ALLOWED_EXTENSIONS = os.environ.get('ALLOWED_EXTENSIONS','dat,csv').split(',')
-POSTGRES_URI = os.environ.get('POSTGRES_URI', 'postgresql+psycopg2://postgres:cedenarfinal@186.85.149.39:5432/cedenar')
-app.secret_key = os.environ.get("GOOGLE_CLIENT_SECRET", 'UZ6HVz-lHiEN2BNWmnqZvYLu') or os.urandom(24)
+POSTGRES_URI = os.environ.get('POSTGRES_URI', '')
+app.secret_key = os.environ.get("GOOGLE_CLIENT_SECRET", '') or os.urandom(24)
 
 # User session management setup
 # https://flask-login.readthedocs.io/en/latest

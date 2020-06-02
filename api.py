@@ -34,10 +34,10 @@ GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", '')
 GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", '')
 ALLOWED_EXTENSIONS = os.environ.get('ALLOWED_EXTENSIONS','dat,csv').split(',')
 POSTGRES_URI = os.environ.get('POSTGRES_URI', '')
-app.secret_key = os.environ.get("GOOGLE_CLIENT_SECRET", '') or os.urandom(24)
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.secret_key = os.environ.get("GOOGLE_CLIENT_SECRET", '') or os.urandom(24)
 app.config['MAX_CONTENT_LENGTH'] = int(os.environ.get('MAX_CONTENT_LENGTH',200)) * 1024 * 1024 # 100MB
 
 # User session management setup

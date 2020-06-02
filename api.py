@@ -10,7 +10,7 @@ import sqlite3
 
 from db import init_db_command
 from user import User
-from words import get_frecuency_words, get_n_grama
+#from words import get_frecuency_words, get_n_grama
 
 import json
 from flask_login import (
@@ -136,11 +136,9 @@ def frecuency():
         file_name = 'df_texto.dat' if request.args.get('tipo') == 'texto' else 'df_texto_limpiar.dat'
         count = int(request.args.get('count') or 20)
         numero = int(request.args.get('numero') or 1)
-        if os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], file_name)):
-            response['error'].append('read')
-            df_texto = pd.read_pickle(os.path.join(app.config['UPLOAD_FOLDER'], file_name))            
-            response['error'].append('get fre')
-            response = get_frecuency_words(count, df_texto) if numero == 1 else get_n_grama(numero, count, df_texto)
+        if os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], file_name)):            
+            df_texto = pd.read_pickle(os.path.join(app.config['UPLOAD_FOLDER'], file_name))                        
+            #response = get_frecuency_words(count, df_texto) if numero == 1 else get_n_grama(numero, count, df_texto)
         else:
             response['error'] = 'Archivo no existe'
     except Exception as ex:

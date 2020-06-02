@@ -1,10 +1,11 @@
+import os
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score, precision_score, balanced_accuracy_score
 from sklearn.model_selection import train_test_split
 
 ALLOWED_EXTENSIONS = os.environ['ALLOWED_EXTENSIONS'].split(',') if 'ALLOWED_EXTENSIONS' in os.environ else ['dat','csv']
 
-def eval_modelo(X=[], Y=[], modelo, accuracy=balanced_accuracy_score):
+def eval_modelo(X, Y, modelo, accuracy=balanced_accuracy_score):
     X_train, X_test, y_train, y_test = train_test_split(X, 
                                                         Y, 
                                                         test_size = 0.3, 

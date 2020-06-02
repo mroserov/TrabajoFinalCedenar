@@ -10,7 +10,7 @@ import sqlite3
 
 from db import init_db_command
 from user import User
-#from words import get_frecuency_words, get_n_grama
+from words import get_frecuency_words, get_n_grama
 
 import json
 from flask_login import (
@@ -35,11 +35,11 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = int(os.environ.get('MAX_CONTENT_LENGTH',200)) * 1024 * 1024 # 100MB
 
-GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", '')
-GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", '')
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", '595522474871-j8tiio3u9791jkdod61ovfto96sv40ol.apps.googleusercontent.com')
+GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", 'UZ6HVz-lHiEN2BNWmnqZvYLu')
 ALLOWED_EXTENSIONS = os.environ.get('ALLOWED_EXTENSIONS','dat,csv').split(',')
-POSTGRES_URI = os.environ.get('POSTGRES_URI', '')
-app.secret_key = os.environ.get("GOOGLE_CLIENT_SECRET", '') or os.urandom(24)
+POSTGRES_URI = os.environ.get('POSTGRES_URI', 'postgresql+psycopg2://postgres:cedenarfinal@186.85.149.39:5432/cedenar')
+app.secret_key = os.environ.get("GOOGLE_CLIENT_SECRET", 'UZ6HVz-lHiEN2BNWmnqZvYLu') or os.urandom(24)
 
 # User session management setup
 # https://flask-login.readthedocs.io/en/latest
@@ -47,11 +47,11 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 # Naive database setup
-try:
-    init_db_command()
-except sqlite3.OperationalError as ex:
+#try:
+    #init_db_command()
+#except sqlite3.OperationalError as ex:
     # Assume it's already been created
-    pass
+#    pass
 
 # OAuth 2 client setup
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
@@ -138,7 +138,7 @@ def frecuency():
         numero = int(request.args.get('numero') or 1)
         if os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], file_name)):            
             df_texto = pd.read_pickle(os.path.join(app.config['UPLOAD_FOLDER'], file_name))                        
-            #response = get_frecuency_words(count, df_texto) if numero == 1 else get_n_grama(numero, count, df_texto)
+            response = get_frecuency_words(count, df_texto) if numero == 1 else get_n_grama(numero, count, df_texto)
         else:
             response['error'] = 'Archivo no existe'
     except Exception as ex:
@@ -387,4 +387,4 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 if __name__ == '__main__':
-    app.run()
+    app.run(ssl_context='adhoc')

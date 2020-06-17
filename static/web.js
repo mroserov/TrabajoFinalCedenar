@@ -44,7 +44,7 @@ $(function () {
     $("#consignas tbody").html('');
     $("#jsonCons").html('');
     ajax.call({
-      url : '/modelo/consignaciones.dat?id_consignacion=' + id_consignacion.trim()+'&transformador=' + transformador,      
+      url : '/consignaciones?id_consignacion=' + id_consignacion.trim()+'&transformador=' + transformador,      
       fnsuccess : function(data) {
         if (data.hasOwnProperty('error') ) {
           bootbox.alert('Error evalundo Consignacion: '+ data.error);
@@ -70,7 +70,7 @@ $(function () {
   function getWords(tipo, count, num){    
     $("#jsonText").html("");
     ajax.call({
-      url : '/words/frecuencia?tipo=' + tipo.trim() + '&count=' + count + "&numero=" + num,
+      url : '/texting?tipo=' + tipo.trim() + '&count=' + count + "&numero=" + num,
       fnsuccess : function(data) {
         if (data.hasOwnProperty('error') ) {
           bootbox.alert('Error en Bitacoras: '+ data.error);

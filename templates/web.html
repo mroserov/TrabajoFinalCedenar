@@ -28,12 +28,14 @@
           <a class="nav-item nav-link" id="nav-text-tab" data-toggle="tab" href="#nav-text" role="tab"
             aria-controls="nav-text" aria-selected="false">Texting</a>
           <a class="nav-item nav-link" id="nav-arch-tab" data-toggle="tab" href="#nav-arch" role="tab"
-            aria-controls="nav-arch" aria-selected="false">Modelos</a>
+            aria-controls="nav-arch" aria-selected="false">Archivos</a>
         </div>
       </nav>
     </div>
     <div class="exit-button">
       {{data}}
+      <input type="hidden" value="{{data}}" id="usuario">
+      <button type="button" class="btn btn-outline-primary" onclick="location.href='/doc'">Doc</button>
       <button type="button" class="btn btn-outline-primary" onclick="location.href='/logout'">Salir</button>
     </div>
   </div>
@@ -77,9 +79,8 @@
         <div class="card">
           <div class="card-body">
             <p><i>Clase</i> Representa la probabilidad que los elementos de esa Consignación fallen en el periodo de tiempo.</p>
-            <div><i>Clase 1</i> &#60; 6 días</div>
-            <div><i>Clase 2</i> >= 25 días</div>
-            <div><i>Clase 3</i> > 148 días</div>            
+            <div><i>Clase 1</i> &#60;= 30 días</div>            
+            <div><i>Clase 2</i> > 30 días</div>        
           </div>
           <br>
         </div>
@@ -118,9 +119,8 @@
         <div class="card">
           <div class="card-body">
             <p>Clase Representa la probabilidad que los elementos de esa Bitácora fallen en el tiempo.</p>
-            <div><i>Clase 1</i> &#60;19 días</div>
-            <div><i>Clase 2</i> >= 19 días</div>
-            <div><i>Clase 3</i> > 30 días</div>            
+            <div><i>Clase 1</i> &#60;= 30 días</div>            
+            <div><i>Clase 2</i> > 30 días</div>            
           </div>
         </div>
         <br>
@@ -165,7 +165,7 @@
       </div>
       <div class="tab-pane fade" id="nav-arch" role="tabpanel" aria-labelledby="nav-arch-tab">
         <br>
-        <h1>Modelos</h1>
+        <h1>Archivos</h1>
         <br>
         <table class="table" id="archivos">
           <thead>
@@ -201,6 +201,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/es.min.js"></script>
   <!-- Optional JavaScript -->
   <script src="{{ url_for('static', filename='web.js')}}"> </script>
+  <script>
+    window.onload = function() {
+      localStorage.setItem("usuario",$("#usuario").val())
+    }
+  </script>
 </body>
 
 </html>

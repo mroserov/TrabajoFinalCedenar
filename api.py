@@ -8,7 +8,6 @@ import pandas as pd
 import xgboost
 import sqlite3
 
-from db import init_db_command
 from user import User
 from words import get_frecuency_words, get_n_grama
 
@@ -46,13 +45,6 @@ app.secret_key = os.environ.get("GOOGLE_CLIENT_SECRET", '') or os.urandom(24)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-# Naive database setup
-#try:
-    #init_db_command()
-#except sqlite3.OperationalError as ex:
-    # Assume it's already been created
-#    pass
-
 # OAuth 2 client setup
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
@@ -61,32 +53,33 @@ client = WebApplicationClient(GOOGLE_CLIENT_ID)
 def load_user(user_id):
     return User.get(user_id)
 
-@app.route('/doc')
+@app.route('/docs')
 def doc():
     """
     Documentación de Swagger
     """
     swagger_app = swagger(app, from_file_keyword='swagger_from_file')
-    swagger_app['info']['title'] = 'CEDENAR Api'
+    swagger_app['info']['title'] = 'Documentación Api'
     swagger_app['info']['description'] = 'Api para CEDENAR S.A. E.S.P.'
     swagger_app['info']['version'] = '1.0.0'    
-    swagger_app['schemes'] = [os.environ.get('SCHEMES','http')]
+    swagger_app['schemes'] = [os.environ.get('SCHEMES','https')]
     
     return jsonify(swagger_app)
 
-@app.route('/modelo/<path:nombre_archivo>')
+@app.route('/consignaciones')
 @login_required
-def load_model(nombre_archivo):
+def load_model():
     """
-    Cargar Modelo
+    Consignaciones
     swagger_from_file: docs/modelo.yml    
     """
     response = {}
     try:
         #query = f"select id_bitacora, tipo, responsable,nivel,zona,subestacion,circuito,transformador, elemento_corte, tipo_apertura, motivo_apertura, afectacion, carga_padre, acumulado_fallas from ds_bitacoras where clase IS NOT null order by id"
-        query = "select id_consignacion, responsable,supervisor,zona,subestacion,circuito,transformador, carga, prioridad, carga_afectada ,acumulado_fallas from ds_consignaciones where clase3 IS NOT null order by id"
+        query = "select id_consignacion, responsable,supervisor,zona,subestacion,circuito,transformador, carga, prioridad, carga_afectada ,acumulado_fallas, elemento_corte, fecha_consigna_actual,trabajos from ds_consignaciones where clase3 IS NOT null order by id"
         # load model from file    
         model = None
+        nombre_archivo = "consignaciones.dat"
         if os.path.isfile(os.path.join(app.config['UPLOAD_FOLDER'], nombre_archivo)):
             model = load(os.path.join(app.config['UPLOAD_FOLDER'], nombre_archivo))
             #print("Loaded model from: pima.joblib.dat")    
@@ -128,8 +121,12 @@ def load_model(nombre_archivo):
     
     return jsonify(response)
 
-@app.route('/words/frecuencia', methods=['GET'])
+@app.route('/texting', methods=['GET'])
 def frecuency():
+    """
+    Cargar Modelo
+    swagger_from_file: docs/texting.yml    
+    """
     response = {}
     response['error'] = []
     try:
@@ -273,7 +270,7 @@ def delete_files(nombre_archivo):
         return response_upload(f'El archivo <i>{nombre_archivo}</i> no existe, <br>lista de archivos: <i>{os.listdir(UPLOAD_FOLDER)}</i>')
     return "Archivo borrado"
 
-@app.route('/web')
+@app.route("/")
 def web(name=None):
     if current_user.is_authenticated:
         return render_template('web.html', data=current_user.email)
@@ -335,7 +332,7 @@ def callback():
             picture = userinfo_response.json()["picture"]
             users_name = userinfo_response.json()["given_name"]
         else:
-            return "User email not available or not verified by Google.", 400
+            return redirect(url_for("login",msg=f"El email <i>{users_email}</i> no está autorizado o no es permitido, intente con otro email o solicite acceso al sistema"))
 
         # Create a user in your db with the information provided
         # by Google
@@ -345,7 +342,7 @@ def callback():
 
         # Doesn't exist? Add it to the database.
         if not User.valid(users_email):
-            return "Usuario no permitido"
+            return redirect(url_for("login",msg=f"El email <i>{users_email}</i> no está autorizado, intente con otro email o solicite acceso al sistema"))
 
         # Doesn't exist? Add it to the database.
         if not User.get(unique_id):
@@ -360,12 +357,12 @@ def callback():
     except Exception as ex:
         return "Error: " + str(ex)
 
-@app.route('/')
+@app.route('/doc')
 def hello(name=None):
     if current_user.is_authenticated:
         return render_template('index.html')
     else:
-        return redirect(url_for("login",msg="No Authorizado por favor ingrese"))    
+        return redirect(url_for("login",msg="No Authorizado, por favor ingrese"))    
 
 @app.route("/logout")
 def logout():
@@ -376,7 +373,7 @@ def logout():
 @login_manager.unauthorized_handler
 def unauthorized():
     # do stuff
-    return redirect(url_for("login",msg="No Authorizado por favor ingrese"))
+    return redirect(url_for("login",msg="No Authorizado, por favor ingrese"))
 
 def response_upload(message):
     return f'<h1>{message}</h1><br><form action="/archivo"><button type="submit">Regresar</button></form>'

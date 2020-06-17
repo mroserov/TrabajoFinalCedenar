@@ -1,0 +1,23 @@
+Texting bitacora
+---    
+tags:
+- Texting
+parameters:
+- in: query
+  name: tipo
+  type: text
+  enum: ["texto", "clear"]
+  default: "texto"
+- in: query
+  name: count
+  required: true
+  type: integer
+- in: query
+  name: numero
+  required: true
+  type: integer
+responses:
+  200:
+      description: Accurracy
+      schema:
+          type: object

@@ -5,8 +5,10 @@
     <meta charset="UTF-8">
     <title>Cedenar Api Doc</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='swagger-ui.css')}}" >
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon-32x32.png')}}" sizes="32x32" />
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon-16x16.png')}}" sizes="16x16" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png')}}" sizes="32x32" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <style>
       html
       {
@@ -25,13 +27,46 @@
       body
       {
         margin:0;
-        background: #fafafa;
+        padding-top: 30px;
+      }
+      .media {
+          height: 65px;
+      }
+      .fixed-top {
+          position: fixed;
+          top: 0;
+          right: 0;
+          left: 0;
+          z-index: 1030;
+      }
+      .border-bottom {
+          border-bottom: 1px solid #dee2e6!important;
+      }
+      .bg-white {
+          background-color: #fff!important;
+      }
+      .exit-button {
+        margin-top: 10px;
+        margin-right: 10px;
+        margin-left: 25px;
+      }
+
+      .exit-button button{
+        margin-left: 10px;
       }
     </style>
   </head>
 
   <body>
     <!-- <img src="{{ url_for('static', filename='logo_cedenar.png')}}" /> -->
+    <div class="media bg-white fixed-top border-bottom">
+      <img src="{{ url_for('static', filename='logo.png')}}" alt="Cedenar" class="rounded" height="60">
+      <div class="exit-button">
+        <label id="usuario"></label>
+        <button type="button" class="btn btn-outline-primary" onclick="location.href='/'">Web</button>
+        <button type="button" class="btn btn-outline-primary" onclick="location.href='/logout'">Salir</button>
+      </div>
+    </div>
     <div id="swagger-ui"></div>
 
     <script src="{{ url_for('static', filename='swagger-ui-bundle.js')}}"> </script>
@@ -41,7 +76,7 @@
       // Begin Swagger UI call region
       //"{{ url_for('static', filename='swagger.json')}}",
       const ui = SwaggerUIBundle({
-        url: "/doc",
+        url: "/docs",
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [
@@ -56,6 +91,11 @@
       // End Swagger UI call region
 
       window.ui = ui
+      user = localStorage.getItem("usuario");
+      if(user !=null){
+        ele = document.getElementById('usuario');
+        ele.innerHTML = user;
+      }
     }
   </script>
   </body>

@@ -1,15 +1,15 @@
-Cargar Modelo
+Predecir Clase
 ---    
 tags:
-- Modelos
+- Consignaciones
 parameters:
-- in: path
-  name: nombre_archivo
-  required: true
-  type: string
+- in: query
+  name: transformador
+  required: false
+  type: integer
 - in: query
   name: id_bitacora
-  required: true
+  required: false
   type: integer
 responses:
   200:

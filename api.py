@@ -76,7 +76,8 @@ def load_model():
     response = {}
     try:
         #query = f"select id_bitacora, tipo, responsable,nivel,zona,subestacion,circuito,transformador, elemento_corte, tipo_apertura, motivo_apertura, afectacion, carga_padre, acumulado_fallas from ds_bitacoras where clase IS NOT null order by id"
-        query = "select id_consignacion, responsable,supervisor,zona,subestacion,circuito,transformador, carga, prioridad, carga_afectada ,acumulado_fallas, elemento_corte, fecha_consigna_actual,trabajos from ds_consignaciones where clase3 IS NOT null order by id"
+        # query = "select id_consignacion, responsable,supervisor,zona,subestacion,circuito,transformador, carga, prioridad, carga_afectada ,acumulado_fallas, elemento_corte, fecha_consigna_actual,trabajos from ds_consignaciones where clase3 IS NOT null order by id"
+        query ="select id_consignacion, responsable,supervisor,zona,subestacion,circuito, carga, prioridad, carga_afectada ,acumulado_fallas, elemento_corte, trabajos from ds_consignaciones where clase3 IS NOT null and extract(year from fecha_consigna_anterior) = 2020 and duracion_dias > 0 order by id"
         # load model from file    
         model = None
         nombre_archivo = "consignaciones.dat"
@@ -95,6 +96,7 @@ def load_model():
             else:
                 id_consignacion = request.args.get('id_consignacion',-1)
             df = pd.read_sql_query(query, prod)
+            prod.dispose()
             response['data']=df[df.id_consignacion == int(id_consignacion)].to_dict('records')
             if len(response['data']) == 0:
                 response['error'] = 'Consignacion no existe'
@@ -102,17 +104,30 @@ def load_model():
                 df_transformado = pd.read_pickle(os.path.join(app.config['UPLOAD_FOLDER'],'df_texto_transformado.dat'))
                 df_dummie=pd.get_dummies(df,drop_first=True)
 
+
+                columns = pd.read_pickle(os.path.join(app.config['UPLOAD_FOLDER'],'df_columns.dat'))
+                # filtro las columnas que guardamos en el modelo entrenado
+                columns.remove('clase')
+
+                # Agregar las colummnas que no esten en df_dummie_val, las agrego en 0
+                for col in columns:
+                    if not col in df_dummie.columns:
+                        df_dummie[col]=0
+                
+                # Merge dummie con df transformado
                 df_transformado['id_consignacion']=df_transformado.index
-                df_dummie= pd.merge(df_transformado, df_dummie, on='id_consignacion')
+                df_dummie= pd.merge(df_transformado, df_dummie[columns], on='id_consignacion')
                 
                 df_dummie=df_dummie[df_dummie.id_consignacion == int(id_consignacion)]
-                #borro id_consignacion
+                # Borrar id_consignacion
                 X1 = df_dummie.drop(labels=['id_consignacion'],axis=1)
-                res = model.predict_proba(X1)
+                
+                columnsX = pd.read_pickle(os.path.join(app.config['UPLOAD_FOLDER'],'columns.dat'))
+
+                res = model.predict_proba(X1[columnsX])
                 response['model'] = []
                 response['model'].append(dict(clase=1, valor=str(res[0][0])))
                 response['model'].append(dict(clase=2, valor=str(res[0][1])))
-                response['model'].append(dict(clase=3, valor=str(res[0][2])))
         else:
             response['error'] = 'Archivo no existe'
         
@@ -384,4 +399,4 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 if __name__ == '__main__':
-    app.run(ssl_context='adhoc')
+    app.run(ssl_context='adhoc', debug=True)

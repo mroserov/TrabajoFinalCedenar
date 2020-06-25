@@ -14,7 +14,10 @@ class User(UserMixin):
 
     @staticmethod
     def valid(email):
-        users = USERS.split(',')
+        users = USERS
+        if '*' in users:
+            return True
+        users = users.split(',')
         if not email in users:
             return None
 

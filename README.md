@@ -1,9 +1,11 @@
 # TrabajoFinalCedenar
 Trabajo De Grado
 
-Presentación
+## Presentación
 
-[![Presentación](http://mybinder.org/badge.svg)](http://mybinder.org/v2/gh/mroserov/TrabajoFinalCedenar/master?filepath=presentacion.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mroserov/TrabajoFinalCedenar/master?filepath=presentacion.ipynb)
+
+## Configurar env
 
 Create env
 virtualenv cedenar
@@ -27,6 +29,8 @@ Run App localhost on http://127.0.0.1:5000/
 ```bash
 python api.py
 ```
+
+## Publicar en heroku
 
 Para publicar automáticamente en heroku se debe hacer push en la rama master de GitHub
 ```bash

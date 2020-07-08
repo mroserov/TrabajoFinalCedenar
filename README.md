@@ -1,7 +1,10 @@
 # TrabajoFinalCedenar
 Trabajo De Grado
 
+[Url API de Cedenar](https://trabajofinalcedenar.herokuapp.com/)
+
 ## Presentación
+Abre el archivo `presentacion.ipynb` que contiene la presentacion realizada en jupyter notebook con la biblioteca RISE y que corre en binder 
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mroserov/TrabajoFinalCedenar/master?filepath=presentacion.ipynb)
 

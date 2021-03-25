@@ -37,7 +37,7 @@ pylint==2.5.2
 pyOpenSSL==19.1.0
 python-dateutil==2.8.1
 pytz==2020.1
-PyYAML==5.3.1
+PyYAML==5.4
 query-string==2019.4.13
 regex==2020.5.14
 requests==2.23.0
